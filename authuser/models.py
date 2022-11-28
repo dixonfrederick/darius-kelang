@@ -21,8 +21,8 @@ class User(AbstractUser):
 
 
 class Transaksi(models.Model):
-    jenisTransaksi = models.CharField(max_length=30)
-    nominal = models.BigIntegerField()
+    jenisTransaksi = models.CharField(max_length=30, null=True)
+    nominal = models.BigIntegerField(null=True)
     tanggalTransaksi = models.DateField(auto_now=True)
     users = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
