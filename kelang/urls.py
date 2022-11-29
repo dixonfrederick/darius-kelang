@@ -30,4 +30,5 @@ urlpatterns = [
     path('login/', login),
     path("", include("main.urls")),
     path('wallet/', include('wallet.urls'))
+    path('export/', include("export.urls")),
 ]
