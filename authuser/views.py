@@ -4,6 +4,7 @@ from .serializers import UserSerializer, TransaksiSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import make_password
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -11,6 +12,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def perform_create(self, serializer):
+        if ('password' in self.request.data):
+            password = make_password(self.request.data['password'])
+            serializer.save(password=password)
+        else:
+            serializer.save()
 
 class TransaksiViewSet(viewsets.ModelViewSet):
     queryset = Transaksi.objects.all()
