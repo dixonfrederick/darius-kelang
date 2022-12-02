@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("main.urls")),
     path('api/v1/', include(router.urls)),
+    path('auth/',include("authuser.urls")),
+    path('wallet/', include('wallet.urls')),
     path('auth/', include("authuser.urls")),
     path('login/', login),
     path('export/', include("export.urls")),
