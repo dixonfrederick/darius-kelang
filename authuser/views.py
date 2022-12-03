@@ -5,6 +5,18 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password
+from wallet.views import namedtuplefetchall
+from django.db import connection
+from django.shortcuts import render
+
+
+def getBalance(request):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute(
+        """SELECT balance FROM wallet WHERE userid=(SELECT username FROM authuser_user WHERE username='donoKasino');""")
+    result = namedtuplefetchall(cursor)
+    return render(request, 'authuser/test.html', {'result': result})
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,6 +30,7 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.save(password=password)
         else:
             serializer.save()
+
 
 class TransaksiViewSet(viewsets.ModelViewSet):
     queryset = Transaksi.objects.all()

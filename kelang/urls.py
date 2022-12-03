@@ -18,7 +18,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from authuser.views import UserViewSet, TransaksiViewSet
 from main.views import login
-
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'transaksi', TransaksiViewSet)
@@ -33,3 +32,5 @@ urlpatterns = [
     path('budgetcategory/', include("budgetcategory.urls"))
     path('entry/', include("budgetentry.urls"))
 ]
+
+
