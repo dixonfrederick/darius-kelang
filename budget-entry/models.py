@@ -4,11 +4,12 @@ from django.conf import settings
 # class entry(models.Model):
     # int id =
     # int uid = userId
-    # int budgetId =
+    # int catId = budget-category ID
     # int budgetTargetValue =
-    # int budgetFulfilledValue =
     # date editDate =
     # final date createdDate =
+
+    # int budgetFulfilledValue =
     # final date fulfilledDate =
 
     # def __str__(self):
