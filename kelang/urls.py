@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('auth/', include("authuser.urls")),
     path('login/', login),
-    path("", include("main.urls")),
-    path('wallet/', include('wallet.urls'))
+    path('wallet/', include('wallet.urls')),
     path('export/', include("export.urls")),
+    path('budget-category/', include("budget-category.urls"))
 ]
