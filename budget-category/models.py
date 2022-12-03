@@ -26,11 +26,12 @@ class Actions(models.model) :
       self.deletion = True
       self.updateBudgetList()
 
-    def getBudgetCategoryByID(self, *args) :
+    def getBudgetCategoryByID(self, **kwargs) :
+
+      return Actions.objects.filter(title__icontains = kwargs)
       
-      pointer = connection.cursor()
-      pointer.execute("SET SEARCH_PATH TO POSTGRES, PUBLIC")
-      pointer.execute("SELECT * FROM ")
+      
+
 
 
 
