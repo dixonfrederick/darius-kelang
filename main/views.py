@@ -11,4 +11,4 @@ def login(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def homePageView(request):
-    return HttpResponse("Hello, World!")
+    return render (request, 'main/main.html')
