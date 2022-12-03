@@ -24,15 +24,10 @@ router.register(r'transaksi', TransaksiViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
     path('', include("main.urls")),
     path('api/v1/', include(router.urls)),
     path('auth/', include("authuser.urls")),
     path('login/', login),
-=======
     path("", include("main.urls")),
     path('wallet/', include('wallet.urls'))
->>>>>>> b3d0001f289592ec69a6322ee65590deafc70022
 ]
-
-
