@@ -10,6 +10,10 @@ from templates import *
 from models import *
 from forms import *
 
+def namedtuplefetchall(cursor):
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
 
 def homePageView(request) :
     return render(request, "/home")
@@ -36,7 +40,7 @@ def addCategory(request, form_class = BudgetCategory, template = "addCategory.HT
 
     
 
-def viewAllBudget(request, form_class = BudgetCategory, template = "viewAllBudget.HTML") : # menampilkan daftar semua budget dengan tipe tertentu
+def budgetList(request, form_class = BudgetCategory, template = "viewAllBudget.HTML") : 
 
     categories_list = form_class.active.all()
 
@@ -52,6 +56,37 @@ def viewAllBudget(request, form_class = BudgetCategory, template = "viewAllBudge
         'paginator': paginator,
         'Laman': page,
     }, context_instance=RequestContext(request))
+
+
+def viewAllBudgetCategory(request) :
+    
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute("""SELECT * FROM BUDGET_CATEGORY_LIST;""") #TODO
+    result = namedtuplefetchall(cursor)
+    return render (request, 'viewAllBudget.html', {'result': result})
+
+
+def getBudgetCategoryByID(request) :
+      
+    pointer = connection.cursor()
+    pointer.execute("SET SEARCH_PATH TO POSTGRES, PUBLIC")
+    pointer.execute("SELECT * FROM BUDGET_CATEGORY WHERE ID = ""; ")
+    result = namedtuplefetchall(pointer)
+    return render (request, 'viewAllBudget.html', {'result': result})
+
+
+
+def viewAllSpecificBudget(request) :
+
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute("""SELECT * FROM BUDGET_LIST WHERE Category = "" ;""") #TODO
+    result = namedtuplefetchall(cursor)
+    return render (request, 'viewAllBudget.html', {'result': result})
+   
+
+
 
 
 
