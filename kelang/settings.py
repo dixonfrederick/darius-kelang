@@ -42,13 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-<<<<<<< HEAD
     'authuser',
     'rest_framework',
-    'rest_framework_simplejwt'
-=======
-    'wallet'
->>>>>>> b3d0001f289592ec69a6322ee65590deafc70022
+    'rest_framework_simplejwt',
+    'wallet',
 ]
 
 MIDDLEWARE = [
