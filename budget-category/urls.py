@@ -10,6 +10,6 @@ urlpatterns = [
     path("update-budget-list", updateBudgetList, name="updateBudgetList"),
     path("update-budget-category", updateBudgetCategory, name="updateBudgetCategory"),
     path("cancel/", cancelOperation, name="cancelOperation"),
-    path("view-budget-entry", viewAllBudget, name="viewAllBudget"),
+    path("view-budget-entry", viewAllBudgetCategory, name="viewAllBudgetCategory"),
     path("success-operation/", successOperation, name="successOperation"),
 ]
