@@ -15,11 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from authuser.views import UserViewSet, TransaksiViewSet
+from main.views import login
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'transaksi', TransaksiViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
+    path('', include("main.urls")),
+    path('api/v1/', include(router.urls)),
+    path('auth/', include("authuser.urls")),
+    path('login/', login),
+=======
     path("", include("main.urls")),
     path('wallet/', include('wallet.urls'))
+>>>>>>> b3d0001f289592ec69a6322ee65590deafc70022
 ]
 
 
