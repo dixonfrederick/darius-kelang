@@ -1,8 +1,25 @@
 import csv
 import xlsxwriter
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render
 from authuser.models import Transaksi
+
+
+def export(request):
+    if request.method == 'POST':
+        res = request.POST
+        tipe = res.get('type')
+        if tipe == "csv":
+            return download_csv(request)
+        elif tipe == "xlsx":
+            return download_xlsx(request)
+        elif tipe == "json":
+            return download_json(request)
+        else:
+            return HttpResponseBadRequest()
+
+    return render(request, 'export/exportpage.html')
 
 
 def download_csv(request):
@@ -18,7 +35,7 @@ def download_csv(request):
     return response
 
 
-def download_xlsx(response):
+def download_xlsx(request):
     response = HttpResponse(
         content_type='text/vnd.ms-excel',
         headers={'Content-Disposition': 'attachment; filename="somefilename.xlsx"'},
@@ -32,7 +49,7 @@ def download_xlsx(response):
     return response
 
 
-def download_json(response):
+def download_json(request):
     data = {  # Dummy
         "name": "sathiyajith",
         "rollno": 56,
