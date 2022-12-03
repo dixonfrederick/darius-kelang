@@ -28,7 +28,6 @@ urlpatterns = [
     path('', include("main.urls")),
     path('api/v1/', include(router.urls)),
     path('wallet/', include('wallet.urls')),
-    path('auth/', include("authuser.urls")),
     path('login/', login),
     path('export/', include("export.urls")),
     path('budgetcategory/', include("budgetcategory.urls"))
