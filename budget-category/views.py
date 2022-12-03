@@ -32,7 +32,7 @@ def addCategory(request, form_class = BudgetCategory, template = "addCategory.HT
         
         if form.is_valid():
             category = form.save()
-            return HttpResponseRedirect(reverse('budget_category_list'))
+            return HttpResponseRedirect(reverse('viewAllBudgetCategory'))
     else:
         form = form_class()
 
@@ -64,7 +64,7 @@ def viewAllBudgetCategory(request) :
     cursor.execute("SET search_path TO postgres,public")
     cursor.execute("""SELECT * FROM BUDGET_CATEGORY_LIST;""") #TODO
     result = namedtuplefetchall(cursor)
-    return render (request, 'viewAllBudget.html', {'result': result})
+    return render (request, 'viewAllBudgetCategory.html', {'result': result})
 
 
 def getBudgetCategoryByID(request) :
@@ -73,7 +73,7 @@ def getBudgetCategoryByID(request) :
     pointer.execute("SET SEARCH_PATH TO POSTGRES, PUBLIC")
     pointer.execute("SELECT * FROM BUDGET_CATEGORY WHERE ID = ""; ")
     result = namedtuplefetchall(pointer)
-    return render (request, 'viewAllBudget.html', {'result': result})
+    return render (request, 'viewAllBudgetCategory.html', {'result': result})
 
 
 
@@ -83,7 +83,7 @@ def viewAllSpecificBudget(request) :
     cursor.execute("SET search_path TO postgres,public")
     cursor.execute("""SELECT * FROM BUDGET_LIST WHERE Category = "" ;""") #TODO
     result = namedtuplefetchall(cursor)
-    return render (request, 'viewAllBudget.html', {'result': result})
+    return render (request, 'viewAllBudgetCategory.html', {'result': result})
    
 
 
@@ -96,7 +96,7 @@ def deleteCategory(request, slug, form_class = BudgetCategory, template = "delet
     if request.POST:
         if request.POST.get('confirmed') and request.POST['confirmed'] == 'Iya':
             category.delete()
-        return HttpResponseRedirect(reverse('budget_category_list'))
+        return HttpResponseRedirect(reverse('viewAllBudgetCategory'))
     return render_to_response(template, {'category': category,}, context_instance=RequestContext(request))
     
 
