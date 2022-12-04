@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'main',
     'authuser',
     'rest_framework',
+    'rest_framework_simplejwt',
     'wallet',
     'export',
     'rest_framework_simplejwt',
