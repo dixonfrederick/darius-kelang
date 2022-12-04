@@ -114,6 +114,13 @@ def successOperation(request) : # jika operasi berhasil (disetujui oleh pengguna
 
 def back(request) : # jika pengguna menekan tombol kembali (ditampilkan di halaman budgetCategory_MainView)
     return render(request, "/home") 
+
+def retrieveAllBudget(Id) :
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute(f"""SELECT * FROM BUDGET_LIST WHERE Category = "{Id}" ;""") #TODO
+    list = namedtuplefetchall(cursor)
+    return list
     
 
 
