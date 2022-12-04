@@ -29,6 +29,13 @@ class Actions(models.model) :
     def getBudgetCategoryByID(self, **kwargs) :
 
       return Actions.objects.filter(title__icontains = kwargs)
+
+    def retrieveAllBudget(Id) :
+      cursor = connection.cursor()
+      cursor.execute("SET search_path TO postgres,public")
+      cursor.execute(f"""SELECT * FROM BUDGET_LIST WHERE Category = "{Id}" ;""") #TODO
+      list = cursor.fetchall()
+      return list
       
       
 
