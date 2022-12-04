@@ -11,7 +11,7 @@ def viewDashboard(request):
     uid = 1
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM BUDGETCATEGORY;""")  # TODO: select only where uid
+    # cursor.execute("""SELECT * FROM BUDGETCATEGORY;""")  # TODO: select only where uid
     budgetList = [1, 2]  # Budget Category IDs
     result = {"uid": uid, "budgetList": budgetList}
 
@@ -23,7 +23,7 @@ def viewEntries(request):
     typeID = 1
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM BUDGETENTRY;""")  # TODO: select only where uid, typeID
+    # cursor.execute("""SELECT * FROM BUDGETENTRY;""")  # TODO: select only where uid, typeID
     entryList = [1, 2]  # BudgetEntryData
     result = {"uid": uid, "typeID": typeID, "entryList": entryList}
     return render(request, "budgetentry/entrylist.html", result)
@@ -71,6 +71,6 @@ def deleteEntry(request):  # Post
 def getEntry(entryID):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM BUDGETENTRY WHERE id == entryID;""")  # TODO: Get details
+    # cursor.execute("""SELECT * FROM BUDGETENTRY WHERE id == entryID;""")  # TODO: Get details
     return {"id": 1, "uid": 1, "typeID": 1, "name": "A", "date": "now", "targetValue": 100000,
             "created": "yesterday", "edited": "earlier"}
