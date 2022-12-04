@@ -9,14 +9,45 @@ from wallet.views import namedtuplefetchall
 from django.db import connection
 from django.shortcuts import render
 
+# get Wallet balance
 
-def getBalance(request):
+
+def getBalance(username: str):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
     cursor.execute(
-        """SELECT balance FROM wallet WHERE userid=(SELECT username FROM authuser_user WHERE username='donoKasino');""")
+        """SELECT balance FROM wallet WHERE userid=(SELECT username FROM authuser_user WHERE username='{0}');""".format(username))
     result = namedtuplefetchall(cursor)
-    return render(request, 'authuser/test.html', {'result': result})
+    return result[0].balance
+
+# update balance untuk transaksi
+
+
+def updateBalance(username: str, amount: int):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute(
+        """UPDATE wallet SET balance={0} WHERE userid='{1}';""".format(amount, username))
+
+# init balance saat buat user baru
+
+
+def getLastId():
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute("""SELECT MAX(id) FROM wallet;""")
+    id = namedtuplefetchall(cursor)
+    print(id)
+    return id[0].max
+
+
+def initWallet(username):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute(
+        """INSERT INTO wallet VALUES ({0},'{1}',0,'{1}');""".format(
+            getLastId()+1, username)
+    )
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -26,6 +57,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         if ('password' in self.request.data):
+            initWallet(self.request.data['username'])
             password = make_password(self.request.data['password'])
             serializer.save(password=password)
         else:
@@ -46,9 +78,13 @@ class TransaksiViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
         data_transaksi = request.data
+        username = user.get_username()
+        user_balance = getBalance(username)
 
         # asumsi 5jt adalah balance wallet nanti
-        if (data_transaksi['nominal'] < 5000000):
+        if (data_transaksi['nominal'] <= user_balance):
+            new_balance = user_balance - data_transaksi['nominal']
+            updateBalance(username, new_balance)
             new_transaksi = Transaksi.objects.create(
                 jenisTransaksi=data_transaksi['jenisTransaksi'],
                 nominal=data_transaksi['nominal'],
@@ -61,4 +97,4 @@ class TransaksiViewSet(viewsets.ModelViewSet):
 
             return Response(serializer.data)
         else:
-            return Response({'message': 'data melebehi balance yang ditentukan'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'data melebehi balance yang ditentukan', 'username': "{0}".format(user.get_username())}, status=status.HTTP_400_BAD_REQUEST)
