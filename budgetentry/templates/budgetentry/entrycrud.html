@@ -8,8 +8,12 @@
 
 {% block content %}
     <h1>Form Entry</h1>
-    <form action="entries/{{ mode }}" method="POST">
+    <form action="" method="POST">
         {% csrf_token %}
+        {% if mode == "Edit" %}
+            <p>Name: </p>{{ data.name }}
+            <p>Date: </p>{{ data.date }}
+        {% endif %}
         {{ form }}
         <input type = "submit" value = "Submit"/>
     </form>
