@@ -57,10 +57,9 @@ def editEntry(request):
 
 def editEntry(request):  # Post
     mode = "edit"
+    # TODO: Read form Data
     if mode == "create":
-        a = 1
-    if mode == "edit":
-        a = 2
+        created = "datetime now"
 
     return render(request, "entries/")
 
