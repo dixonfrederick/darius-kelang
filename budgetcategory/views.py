@@ -6,9 +6,9 @@ from django.urls import *
 from collections import *
 from django.http import *
 from django.db import *
-from templates import *
-from models import *
-from forms import *
+from .templates import *
+from .models import *
+from .forms import *
 
 
 def namedtuplefetchall(cursor):

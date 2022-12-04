@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'wallet',
     'export',
     'budgetentry',
+    'budgetcategory'
 ]
 
 MIDDLEWARE = [
@@ -87,12 +88,7 @@ WSGI_APPLICATION = 'kelang.wsgi.application'
 
 DATABASE_URL = 'postgresql://postgres:9OksUSRrXWH8J70ln06j@containers-us-west-140.railway.app:5655/railway'
 
-DATABASES = {
-    'default': dj_database_url.config(),
-}
-
-DATABASES['default'] = dj_database_url.config()
-DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
