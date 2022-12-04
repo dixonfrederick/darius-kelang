@@ -1,11 +1,12 @@
 from django.db import models
-import authuser.models
+import authuser.models as users
+import budgetcategory.models as budget
 
 
 class BudgetEntry(models.Model):
-    id = models.IntegerField()
-    uid = models.ForeignKey(authuser.models.User, on_delete=models.CASCADE)
-    # catId = models.ForeignKey(budget-category.models., on_delete=models.CASCADE)
+    ID = models.AutoField(primary_key=True)
+    UID = models.ForeignKey(users.User, on_delete=models.CASCADE)
+    catID = models.ForeignKey(budget.BudgetType, on_delete=models.CASCADE)
 
     name = models.CharField()
     date = models.DateField()
@@ -16,6 +17,16 @@ class BudgetEntry(models.Model):
 
     # int budgetFulfilledValue =
     # final date fulfilledDate =
+
+    def __init__(self, UID, catID, cat, name, date, targetValue):
+        cat.updateValue(targetValue)
+        self.UID = UID
+        self.catID = catID
+        self.name = name
+        self.date = date
+
+    def updateTarget(self, targetValue):
+        self.targetValue = targetValue
 
     def __str__(self):
         return self.name

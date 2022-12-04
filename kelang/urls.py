@@ -32,6 +32,6 @@ urlpatterns = [
     path('auth/', include("authuser.urls")),
     path('login/', login),
     path('export/', include("export.urls")),
-    path('budget-category/', include("budget-category.urls"))
+    path('budgetcategory/', include("budgetcategory.urls"))
     path('entry/', include("budgetentry.urls"))
 ]

@@ -8,24 +8,9 @@
 
 {% block content %}
     <h1>Form Entry</h1>
-    <form action="" method="POST">
+    <form action="entries/{{ mode }}" method="POST">
         {% csrf_token %}
-        <p>UID</p>
-        <input type="number" name="UID" required>  {# hidden #}
-        <p>TypeID</p>
-        <input type="number" name="typeidID" required> {# hidden #}
-        <p>Edited</p>
-        <input type="datetime-local" name="edited" required> {# hidden #}
-
-        <p>Nama</p>
-        <input type="text" name="name" required>
-        <p>Target</p>
-        <input type="number" name="balance" required>
-        <p>Date</p>
-        <input type="date" name="setDate" required>
-        <br>
-        <input type = "submit" value = "Tambahkan"/>
-{#        If mode == edit#}
-        <input type = "submit" value = "Hapus"/>
+        {{ form }}
+        <input type = "submit" value = "Submit"/>
     </form>
 {% endblock content %}

@@ -7,7 +7,7 @@ class BudgetCategory(forms.ModelForm):
     class Meta:
         model = BudgetType
         fields = ('name',)
-    
+
     def save(self):
         if not self.instance.slug:
             self.instance.slug = slugify(self.cleaned_data['name'])
