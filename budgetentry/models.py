@@ -8,7 +8,7 @@ class BudgetEntry(models.Model):
     UID = models.ForeignKey(users.User, on_delete=models.CASCADE)
     catID = models.ForeignKey(budget.BudgetType, on_delete=models.CASCADE)
 
-    name = models.CharField()
+    name = models.CharField(max_length=60)
     date = models.DateField()
     targetValue = models.IntegerField()
 

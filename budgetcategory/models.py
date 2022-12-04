@@ -7,7 +7,7 @@ class BudgetManager(models.Manager):
         return super(BudgetManager, self).get_query_set().filter(is_deleted=False)
 
 
-class Actions(models.model):
+class Actions(models.Model):
     creation = models.DateTimeField('Creation', default=datetime.datetime.now)
     update = models.DateTimeField('Update', default=datetime.datetime.now)
     deletion = models.BooleanField('Is deleted', default=False, db_index=True)
@@ -33,7 +33,7 @@ class Actions(models.model):
         return list
 
 
-class BudgetType(models.model):
+class BudgetType(models.Model):
     budgetTypeName = models.CharField(max_length=18, null=True)
     budgetTotalValue = models.IntegerField(null=True)
     userID = models.CharField(max_length=30, null=True)
