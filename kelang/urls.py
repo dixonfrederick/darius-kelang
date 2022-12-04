@@ -18,6 +18,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from authuser.views import UserViewSet, TransaksiViewSet
 from main.views import login
+
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'transaksi', TransaksiViewSet)
@@ -26,9 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("main.urls")),
     path('api/v1/', include(router.urls)),
+    path('wallet/', include('wallet.urls')),
     path('auth/', include("authuser.urls")),
     path('login/', login),
-    path('wallet/', include('wallet.urls')),
     path('export/', include("export.urls")),
-    path('budget-category/', include("budget-category.urls"))
+    path('budgetcategory/', include("budgetcategory.urls"))
+    path('entry/', include("budgetentry.urls"))
 ]
