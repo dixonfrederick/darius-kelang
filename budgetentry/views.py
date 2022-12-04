@@ -22,7 +22,7 @@ def viewDashboard(request):
 
     # budgetList = [1, 2]  # Budget Category IDs
 
-    budgetList = BudgetType.objects.filter(UID=uid)
+    budgetList = BudgetType.objects.filter(userID=uid)
 
     result = {"budgetList": budgetList}
 
@@ -54,7 +54,7 @@ def viewEntryDetail(request):
     typeID = request.session['typeID']
 
     data = BudgetEntry.objects.get(ID=entryID, UID=uid, catID=typeID)
-    result = {"entryID": entryID, "data": data}
+    result = {"entryID": entryID, "data": data, "type": BudgetType.objects.get(userID=uid, budgetTypeID=typeID)}
     return render(request, "budgetentry/entrydetail.html", result)
 
 

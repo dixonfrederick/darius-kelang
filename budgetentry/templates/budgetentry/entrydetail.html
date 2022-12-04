@@ -12,7 +12,7 @@
         <div class="d-grid gap-3">
             <div class="p-2 bg-light border">
                 <div class="mx-auto" style="width: 500px;">
-                    <h1>Entry: "Name"</h1>
+                    <h1>Entry: {{ data.name }}</h1>
                 </div>
             </div>
             <div class="p-2 bg-light border">
@@ -20,24 +20,24 @@
                     <tbody>
                     <tr>
                         <td>Budget Category:</td>
-                        <td>"categoryName"</td>
+                        <td>{{ type.budgetTypeName }}</td>
                     </tr>
                     <tr>
                     <tr>
                         <td>Date:</td>
-                        <td>"setDate"</td>
+                        <td>{{ data.date }}</td>
                     </tr>
                     <tr>
-                        <td>Target:</td>
-                        <td>"targetValue"</td>
+                        <td>Budget Target:</td>
+                        <td>{{ data.targetValue }}</td>
                     </tr>
                     <tr>
                         <td>Created:</td>
-                        <td>"created"</td>
+                        <td>{{ data.created }}</td>
                     </tr>
                     <tr>
                         <td>Edited:</td>
-                        <td>"edited"</td>
+                        <td>{{ data.edited }}</td>
                     </tr>
                     <tr>
                     </tr>
