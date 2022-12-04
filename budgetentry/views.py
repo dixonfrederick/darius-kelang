@@ -33,12 +33,8 @@ def viewEntryDetail(request):
     uid = 1
     typeID = 1
     entryID = 1
-    cursor = connection.cursor()
-    cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM BUDGETENTRY;""")  # TODO: Get details
-    entryDetail = {"id": 1, "uid": 1, "typeID": 1, "name": "A", "date": "now", "targetValue": 100000,
-                   "created": "yesterday", "edited": "earlier"}
-    return render(request, "budgetentry/entrydetail.html", entryDetail)
+    result = {"uid": uid, "typeID": typeID, "entryID": entryID, "data": getEntry(entryID)}
+    return render(request, "budgetentry/entrydetail.html", result)
 
 
 def createEntry(request):
@@ -54,18 +50,28 @@ def editEntry(request):
     typeID = 1
     entryID = 1
     mode = "edit"
-    cursor = connection.cursor()
-    cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM BUDGETENTRY;""")  # TODO: Get details
-    entryDetail = {"id": 1, "uid": 1, "typeID": 1, "name": "A", "date": "now", "targetValue": 100000,
-                   "created": "yesterday", "edited": "earlier"}
-    target = {"uid": uid, "typeID": typeID, "mode": mode, "data": entryDetail}
+
+    target = {"uid": uid, "typeID": typeID, "mode": mode, "entryID": entryID, "data": getEntry(entryID)}
     return render(request, "budgetentry/entrycrud.html", target)
 
 
-# def editEntry(request): # Post
-#     return render(request, "")
+def editEntry(request):  # Post
+    mode = "edit"
+    if mode == "create":
+        a = 1
+    if mode == "edit":
+        a = 2
+
+    return render(request, "entries/")
 
 
-# def deleteEntry(request): # Post
-#     return render(request, "")
+def deleteEntry(request):  # Post
+    return render(request, "entries/")
+
+
+def getEntry(entryID):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute("""SELECT * FROM BUDGETENTRY WHERE id == entryID;""")  # TODO: Get details
+    return {"id": 1, "uid": 1, "typeID": 1, "name": "A", "date": "now", "targetValue": 100000,
+            "created": "yesterday", "edited": "earlier"}
