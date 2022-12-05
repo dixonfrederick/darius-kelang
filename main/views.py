@@ -9,6 +9,6 @@ def login(request):
 
 
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def homePageView(request):
     return render (request, 'main/main.html')
