@@ -126,7 +126,7 @@ SIMPLE_JWT = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://darius-kelang-production.up.railway.app/'
+    'https://darius-kelang-production.up.railway.app'
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
