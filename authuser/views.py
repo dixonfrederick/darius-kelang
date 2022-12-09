@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Transaksi
 from .serializers import UserSerializer, TransaksiSerializer
 from wallet.views import namedtuplefetchall
@@ -19,35 +20,57 @@ from wallet.views import namedtuplefetchall
 ACCESS_TOKEN_GLOBAL = None
 
 
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+
+
 def transaksi_add(request: Request):
     if request.method == 'GET':
         return render(request, "authuser/tambahTransaksi.html")
     elif request.method == 'POST':
-        headers = {
-            "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
-        }
+        # headers = {
+        #     "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
+        # }
         jenisTransaksi = request.POST.get('transaksi')
         nominal = request.POST.get('nominal')
-        nominal = int(nominal)
-        payload = {
-            'jenisTransaksi': jenisTransaksi,
-            'nominal': nominal
-        }
-        url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi"
-        response = requests.post(url=url, data=payload, headers=headers)
-        print(response.content)
+        # nominal = int(nominal)
+        # payload = {
+        #     'jenisTransaksi': jenisTransaksi,
+        #     'nominal': nominal
+        # }
+        # url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi"
+        # url = "http://localhost:8000/api/v1/transaksi/"
+        # response = requests.post(url=url, data=payload, headers=headers)
+        # print(response.content)
+        Transaksi.objects.create(
+            jenisTransaksi=jenisTransaksi,
+            nominal=nominal,
+            users=request.user
+        )
+        updateBalance(request.user.username, int(nominal))
         return redirect("/transaksi/")
 
 
 def transaksi_list(request):
-    url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi/"
-    headers = {
-        "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
-    }
-    response = requests.get(url=url, headers=headers)
-    json_response = json.loads(response.content)
+    json_response = Transaksi.objects.filter(users=request.user.id)
     print(json_response)
     return render(request, "authuser/listTransaksi.html", {'Transaksi': json_response})
+
+
+# class ListTransaksi(APIView):
+#     permission_classes = [IsAuthenticated,]
+#     renderer_classes = [TemplateHTMLRenderer]
+#     global ACCESS_TOKEN_GLOBAL
+
+#     def get(self, request: Request):
+#         url = "http://localhost:8000/api/v1/users"
+
+#         return render(request, "authuser/listTransaksi.html", {'TOKEN': ACCESS_TOKEN_GLOBAL})
 
 
 class LogoutView(APIView):
@@ -73,20 +96,23 @@ class LoginView(APIView):
             'username': username,
             'password': password
         }
-        url = "https://darius-kelang-production.up.railway.app/auth/login/"
+        # url = "https://darius-kelang-production.up.railway.app/auth/login/"
+        # url = "http://localhost:8000/auth/login/"
 
-        response = requests.post(url=url, data=payload)
-        json_response = json.loads(response.content)
-        ACCESS_TOKEN_GLOBAL = json_response['access']
-        print(ACCESS_TOKEN_GLOBAL)
+        # response = requests.post(url=url, data=payload)
+        # json_response = json.loads(response.content)
+        # ACCESS_TOKEN_GLOBAL = json_response['access']
+
         user = authenticate(request, username=username, password=password)
-
+        response = get_tokens_for_user(user)
+        ACCESS_TOKEN_GLOBAL = response['access']
+        print(ACCESS_TOKEN_GLOBAL)
         if user is not None:
             login(request, user)
             message = {
                 'message': 'Login Sukses',
                 'username': request.user.username,
-                'access': json_response['access']
+                'access': ACCESS_TOKEN_GLOBAL
             }
             return redirect('/')
         else:
@@ -104,14 +130,20 @@ def getBalance(username: str):
     result = namedtuplefetchall(cursor)
     return result[0].balance
 
+
 # update balance untuk transaksi
 
 
-def updateBalance(username: str, amount: int):
+def updateBalance(username: str, nominal: int):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute(
-        """UPDATE wallet SET balance={0} WHERE userid='{1}';""".format(amount, username))
+    user_balance = int(getBalance(username))
+
+    if (nominal <= user_balance):
+        new_balance = user_balance - nominal
+        cursor.execute("""UPDATE wallet SET balance={0} WHERE userid='{1}';""".format(
+            new_balance, username))
+
 
 # init balance saat buat user baru
 
