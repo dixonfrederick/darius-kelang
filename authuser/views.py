@@ -34,7 +34,6 @@ def transaksi_add(request: Request):
             'nominal': nominal
         }
         url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi"
-        # url = "http://localhost:8000/api/v1/transaksi/"
         response = requests.post(url=url, data=payload, headers=headers)
         print(response.content)
         return redirect("/transaksi/")
@@ -42,7 +41,6 @@ def transaksi_add(request: Request):
 
 def transaksi_list(request):
     url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi/"
-    # url = "http://localhost:8000/api/v1/transaksi/"
     headers = {
         "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
     }
@@ -50,17 +48,6 @@ def transaksi_list(request):
     json_response = json.loads(response.content)
     print(json_response)
     return render(request, "authuser/listTransaksi.html", {'Transaksi': json_response})
-
-
-# class ListTransaksi(APIView):
-#     permission_classes = [IsAuthenticated,]
-#     renderer_classes = [TemplateHTMLRenderer]
-#     global ACCESS_TOKEN_GLOBAL
-
-#     def get(self, request: Request):
-#         url = "http://localhost:8000/api/v1/users"
-
-#         return render(request, "authuser/listTransaksi.html", {'TOKEN': ACCESS_TOKEN_GLOBAL})
 
 
 class LogoutView(APIView):
@@ -87,7 +74,6 @@ class LoginView(APIView):
             'password': password
         }
         url = "https://darius-kelang-production.up.railway.app/auth/login/"
-        # url = "http://localhost:8000/auth/login/"
 
         response = requests.post(url=url, data=payload)
         json_response = json.loads(response.content)
