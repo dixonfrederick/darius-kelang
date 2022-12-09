@@ -33,14 +33,16 @@ def transaksi_add(request: Request):
             'jenisTransaksi': jenisTransaksi,
             'nominal': nominal
         }
-        url = "http://localhost:8000/api/v1/transaksi/"
+        url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi"
+        # url = "http://localhost:8000/api/v1/transaksi/"
         response = requests.post(url=url, data=payload, headers=headers)
         print(response.content)
         return redirect("/transaksi/")
 
 
 def transaksi_list(request):
-    url = "http://localhost:8000/api/v1/transaksi/"
+    url = "https://darius-kelang-production.up.railway.app/api/v1/transaksi/"
+    # url = "http://localhost:8000/api/v1/transaksi/"
     headers = {
         "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
     }
@@ -84,7 +86,8 @@ class LoginView(APIView):
             'username': username,
             'password': password
         }
-        url = "http://localhost:8000/auth/login/"
+        url = "https://darius-kelang-production.up.railway.app/auth/login/"
+        # url = "http://localhost:8000/auth/login/"
 
         response = requests.post(url=url, data=payload)
         json_response = json.loads(response.content)
