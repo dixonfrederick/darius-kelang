@@ -54,6 +54,7 @@ def transaksi_add(request: Request):
         )
         updateBalance(request.user.username, int(nominal))
         return redirect("/transaksi/")
+    return render(request, "authuser/tambahTransaksi.html")
 
 
 def transaksi_list(request):
