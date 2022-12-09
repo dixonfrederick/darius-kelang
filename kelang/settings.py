@@ -124,6 +124,10 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://darius-kelang-production.up.railway.app/'
+]
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
