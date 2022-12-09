@@ -54,7 +54,8 @@ def viewEntryDetail(request):
     typeID = request.session['typeID']
 
     data = BudgetEntry.objects.get(ID=entryID, UID=uid, catID=typeID)
-    result = {"entryID": entryID, "data": data, "type": BudgetType.objects.get(userID=uid, budgetTypeID=typeID)}
+    result = {"entryID": entryID, "data": data,
+              "type": BudgetType.objects.get(userID=uid, budgetTypeID=typeID)}
     return render(request, "budgetentry/entrydetail.html", result)
 
 
