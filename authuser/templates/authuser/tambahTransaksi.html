@@ -1,0 +1,46 @@
+{% extends 'main/main.html' %} {% load static %} {% block head %} {% block meta
+%}
+<title>Create Transaction</title>
+{% endblock meta %} {% endblock head %} {% block content %}
+<div class="container mt-4">
+  <h3>Create Your Transaction Here</h3>
+  <div class="alert alert-danger" role="alert">{{message}}</div>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label" for="transaksi">Transaction</label>
+        <input
+          type="text"
+          class="form-control"
+          name="transaksi"
+          id="transaksi"
+          placeholder="e.g, Food"
+        />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="nominal">Nominal</label>
+        <input
+          type="number"
+          class="form-control"
+          name="nominal"
+          id="nominal"
+          placeholder="e.g, 1000000"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 mt-4">
+        <button
+          type="submit"
+          class="btn btn-success btn-block mb-4"
+          id="create-transaction"
+          value="create-transaction"
+        >
+          Create Transaction
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock content %}

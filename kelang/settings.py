@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'wallet',
     'export',
+    'rest_framework_simplejwt',
+    'budgetentry',
+    'budget_category',
+    'budgetcategory'
 ]
 
 MIDDLEWARE = [
@@ -85,12 +89,7 @@ WSGI_APPLICATION = 'kelang.wsgi.application'
 
 DATABASE_URL = 'postgresql://postgres:9OksUSRrXWH8J70ln06j@containers-us-west-140.railway.app:5655/railway'
 
-DATABASES = {
-    'default': dj_database_url.config(),
-}
-
-DATABASES['default'] = dj_database_url.config()
-DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -112,6 +111,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'authuser.User'
 
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'username',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+}
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://darius-kelang-production.up.railway.app'
+]
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -135,7 +152,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+LOGIN_URL = "/login/"
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
