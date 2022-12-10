@@ -13,6 +13,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Transaksi
 from .serializers import UserSerializer, TransaksiSerializer
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import make_password
 from wallet.views import namedtuplefetchall
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -159,7 +163,6 @@ def getBalance(username: str):
     result = namedtuplefetchall(cursor)
     return result[0].balance
 
-
 # update balance untuk transaksi
 
 
@@ -233,12 +236,12 @@ class TransaksiViewSet(viewsets.ModelViewSet):
         user_balance = getBalance(username)
 
         # asumsi 5jt adalah balance wallet nanti
-        if (nominal <= user_balance):
-            new_balance = user_balance - nominal
+        if (data_transaksi['nominal'] <= user_balance):
+            new_balance = user_balance - data_transaksi['nominal']
             updateBalance(username, new_balance)
             new_transaksi = Transaksi.objects.create(
-                jenisTransaksi=jenisTransaksi,
-                nominal=nominal,
+                jenisTransaksi=data_transaksi['jenisTransaksi'],
+                nominal=data_transaksi['nominal'],
                 users=user
             )
 
