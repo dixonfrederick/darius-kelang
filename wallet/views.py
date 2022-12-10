@@ -15,9 +15,10 @@ def namedtuplefetchall(cursor):
 
 
 def listwallet(request):
+    username = request.user.username
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM WALLET;""")  # TODO
+    cursor.execute("""SELECT * FROM WALLET WHERE userID = %s""", [username])  # TODO
     result = namedtuplefetchall(cursor)
     return render(request, 'wallet/listwallet.html', {'result': result})
 
@@ -26,11 +27,24 @@ def createwallet(request):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
     if (request.method == 'POST'):
+        userid = request.user.username
         res = request.POST
         id = res.get('id')
         name = res.get('name')
         balance = res.get('balance')
-        userid = res.get('userid')
         cursor.execute("""INSERT INTO WALLET
         VALUES (%s, %s, %s, %s)""", [id, name, balance,  userid])
     return render(request, 'wallet/createwallet.html')
+
+def addwalletbalance(request):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    if (request.method == 'POST'):
+        userid = request.user.username
+        res = request.POST
+        id = res.get('id')
+        balance = res.get('balance')
+        cursor.execute("""UPDATE WALLET
+        SET balance = %s
+        WHERE id = %s AND userId = %s""", [balance,  id, userid])
+    return render(request, 'wallet/addwalletbalance.html')

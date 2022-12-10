@@ -21,6 +21,7 @@
             <th scope="col">No</th>
             <th scope="col">Name</td>
             <th scope="col">Balance</th>
+            <th scope="col">WalletID</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
               <td>{{ forloop.counter }}</td>
               <td>{{ res.name }}</td>
               <td>{{ res.balance }}</td>
+              <td>{{ res.id }}</td>
             </tr>
             {% endfor %} 
           <tr>

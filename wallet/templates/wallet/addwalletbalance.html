@@ -5,15 +5,13 @@
   integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
   crossorigin="anonymous"
 />
-<title>Buat Wallet</title>
+<title>Update Wallet Balance</title>
 {% endblock head %} {% block content %}
-<h1>Form Wallet</h1>
+<h1>Form Update Wallet</h1>
 <form action="" method="POST">
   {% csrf_token %}
   <p>ID</p>
   <input type="text" name="id" required />
-  <p>Nama</p>
-  <input type="text" name="name" required />
   <p>Balance</p>
   <input type="number" name="balance" required />
   <br />

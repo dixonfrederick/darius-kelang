@@ -6,6 +6,7 @@ app_name = 'wallet'
 
 urlpatterns = [
     path('listwallet', listwallet, name='listwallet'),
-    path('createwallet', createwallet, name='createwallet')
+    path('createwallet', createwallet, name='createwallet'),
+    path('addwalletbalance', addwalletbalance, name='addwalletbalance')
 ]
 
