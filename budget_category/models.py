@@ -8,7 +8,7 @@ class BudgetManager(models.Manager):
         return super(BudgetManager, self).get_query_set().filter(is_deleted=False)
 
 
-class Actions(models.model) :
+class Actions(models.Model) :
 
     creation = models.DateTimeField('Creation', default=datetime.datetime.now)
     update = models.DateTimeField('Update', default=datetime.datetime.now)
@@ -44,7 +44,7 @@ class Actions(models.model) :
 
 
 
-class BudgetType(models.model) :
+class BudgetType(models.Model) :
 
    budgetTypeName = models.CharField(max_length=18, null=True)
    budgetValueLimit = models.IntegerField(null=True)
@@ -55,7 +55,7 @@ class BudgetType(models.model) :
 
 class Budget(BudgetType) :
 
-   budgetID = models.IntegerField(max_length=30, null=True)
+   budgetID = models.IntegerField(null=True)
    budgetName = models.CharField(max_length=18, null=True)
    budgetTotalValue = models.IntegerField(null=True)
    userID = models.CharField(max_length=30, null=True)
