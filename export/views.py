@@ -110,8 +110,7 @@ def download_json(request):
     temp_dict = {}
     counter = 0
     for row in budget:
-        temp = {"name": row[0], "date": row[1].strftime(
-            '%d-%m-%Y'), "targetvalue": row[2]}
+        temp = {"name": row[0], "date": row[1].strftime('%d-%m-%Y'), "targetvalue": row[2]}
         temp_dict[str(counter)] = temp
         counter += 1
     data["budget"] = temp_dict
@@ -120,8 +119,7 @@ def download_json(request):
     temp_dict = {}
     counter = 0
     for row in transaksi:
-        temp = {"jenisTransaksi": row[0], "nominal": row[1],
-                "tanggalTransaksi": row[2].strftime('%d-%m-%Y')}
+        temp = {"jenisTransaksi": row[0], "nominal": row[1], "tanggalTransaksi": row[2].strftime('%d-%m-%Y')}
         temp_dict[str(counter)] = temp
         counter += 1
     data["transaksi"] = temp_dict
@@ -166,8 +164,7 @@ def fetch_transaksi():
     print(result)
     transaksi = []
     for res in result:
-        transaksi.append(
-            [res.jenisTransaksi, res.nominal, res.tanggalTransaksi])
+        transaksi.append([res.jenisTransaksi, res.nominal, res.tanggalTransaksi])
     print(transaksi)
 
     return transaksi

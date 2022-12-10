@@ -33,6 +33,10 @@ urlpatterns = [
     path('transaksi/', authviews.transaksi_list),
     path('transaksi/tambah/', authviews.transaksi_add),
     path('export/', include("export.urls")),
+<<<<<<< HEAD
     path('budgetcategory/', include("budgetcategory.urls")),
+=======
+    path('budgetcategory/', include("budget_category.urls")),
+>>>>>>> f7a200692a90f0aa493d7541a1729939d2043af6
     path('entry/', include("budgetentry.urls"))
 ]
