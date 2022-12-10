@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import *
+from budget_category.views import *
 
 urlpatterns = [
     path("home/", homePageView, name="home"),
