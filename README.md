@@ -1,4 +1,4 @@
-Nama Kelompok : DARIUS 
+Nama Kelompok : DARIUS - kelang
 
 Link Git : https://github.com/dixonfrederick/darius-kelang
 
