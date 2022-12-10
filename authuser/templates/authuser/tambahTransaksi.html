@@ -1,7 +1,11 @@
-{% extends 'main/main.html' %} {% load static %} {% block head %} {% block meta
-%}
+{% extends 'main/main.html' %}
+{% load static %}
+{% block head %}
+{% block meta%}
 <title>Create Transaction</title>
-{% endblock meta %} {% endblock head %} {% block content %}
+{% endblock meta %}
+{% endblock head %}
+{% block content %}
 <div class="container mt-4">
   <h3>Create Your Transaction Here</h3>
   <div class="alert alert-danger" role="alert">{{message}}</div>
