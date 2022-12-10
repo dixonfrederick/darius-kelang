@@ -34,5 +34,5 @@ urlpatterns = [
     path('transaksi/tambah/', authviews.transaksi_add),
     path('export/', include("export.urls")),
     path('budgetcategory/', include("budget_category.urls")),
-    path('entry/', include("budgetentry.urls"))
+    path('budgetentry/', include("budgetentry.urls"))
 ]

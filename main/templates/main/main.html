@@ -25,29 +25,29 @@
         </button>
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Wallet</a>
-                    <div class="dropdown-menu">
-                        <a href="/wallet/listwallet" class="dropdown-item">List Wallet</a>
-                        <a href="/wallet/createwallet" class="dropdown-item">Create Wallet</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Transaction</a>
-                    <div class="dropdown-menu">
-                        <a href="/transaksi/" class="dropdown-item">My Transaction</a>
-                        <a href="/transaksi/tambah/" class="dropdown-item">Create Transaction</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="/export/select" class="nav-link">Export</a>
-                </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url budgetentry.views.viewDashboard %}" class="nav-link">Budget Entries</a>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Wallet</a>
+                        <div class="dropdown-menu">
+                            <a href="/wallet/listwallet" class="dropdown-item">List Wallet</a>
+                            <a href="/wallet/createwallet" class="dropdown-item">Create Wallet</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Transaction</a>
+                        <div class="dropdown-menu">
+                            <a href="/transaksi/" class="dropdown-item">My Transaction</a>
+                            <a href="/transaksi/tambah/" class="dropdown-item">Create Transaction</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url budget_category.views.budgetCategory_MainView %}" class="nav-link">Budget Categories</a>
+                        <a href="/budgetentry/dashboard.html/"  class="nav-link">Budget Entries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/budget_category/budgetCategory_MainView.html" class="nav-link">Budget Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/export/select" class="nav-link">Export</a>
                     </li>
                     <li class="nav-item">
                         <a href="/logout" class="nav-link">Logout</a>
@@ -72,7 +72,7 @@
       </h5>
       <h6 class="card-subtitle mb-2 text-muted">Your Balance</h6>
       <p class="card-text">
-      <h2>Rp.{{ balance }},000</h2>
+      <h2>Rp.{{ balance }},00</h2>
       </p>
     </div>
   </div>
