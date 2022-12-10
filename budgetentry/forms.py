@@ -1,6 +1,6 @@
 from django import forms
 import authuser.models as users
-import budgetcategory.models as budget
+import budget_category.models as budget
 
 
 class CreateEntryForm(forms.Form):

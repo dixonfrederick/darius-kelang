@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'export',
     'rest_framework_simplejwt',
     'budgetentry',
-    'budgetcategory'
+    'budget_category'
 ]
 
 MIDDLEWARE = [
