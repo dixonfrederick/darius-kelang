@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.db import connection
 from wallet.views import namedtuplefetchall
+from authuser.models import Transaksi
 
 
 def export(request):

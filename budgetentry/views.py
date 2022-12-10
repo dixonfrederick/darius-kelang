@@ -95,7 +95,6 @@ def editEntry(request, type_ID, entryID):
             Entry.save()
 
     mode = "edit"
-
     target = {"mode": mode, "entryID": entryID, "data": data}
     return render(request, "budgetentry/entrycrud.html", target)
 
@@ -108,6 +107,7 @@ def deleteEntry(request, type_ID, entryID):  # Post
         if Entry.UID == uid:
             Entry.delete()
     return redirect("entries/")
+
 
 # def getEntry(entryID):
 #     # cursor = connection.cursor()

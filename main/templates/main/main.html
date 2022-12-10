@@ -16,7 +16,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
     {% block meta %}{% endblock meta %}
 </head>
-<body>
+
 <nav class="navbar navbar-expand-sm navbar-dark bg-success">
     <div class="container-fluid">
         <a href="/" class="navbar-brand">Kelang</a>
@@ -58,10 +58,23 @@
         </div>
     </div>
 </nav>
-<div class="mainbox container-fluid">
-    {% if user.is_authenticated %}
-        <h3>Welcome {{ user.username }}</h3>
-    {% endif %} {% block content %} {% endblock content %}
+<div class="container mt-4">
+  {% if user.is_authenticated %}
+  <div class="card" style="width: 25rem">
+    <div class="card-body">
+      <h5 class="card-title">
+
+        Welcome {{ user.username }}
+
+      </h5>
+      <h6 class="card-subtitle mb-2 text-muted">Your Balance</h6>
+      <p class="card-text">
+      <h2>Rp.{{ balance }},000</h2>
+      </p>
+    </div>
+  </div>
+  {% endif %}
+  {% block content %} {% endblock content %}
 </div>
 {% block scriptTambahan %} {% endblock scriptTambahan %}
 </body>

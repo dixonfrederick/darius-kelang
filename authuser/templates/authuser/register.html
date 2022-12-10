@@ -7,12 +7,12 @@
 />
 
 {% block meta %}
-<title>Login</title>
+<title>Register</title>
 {% endblock meta %} {% endblock head %} {% block content %}
 
 <div class="col d-flex justify-content-center mt-4">
   <form action="" method="POST">
-    <h3>Login To Your Account</h3>
+    <h3>Register Your Account</h3>
     {% csrf_token %}
     <!-- Name input -->
     <div class="form-outline mb-4">
@@ -31,15 +31,28 @@
       />
     </div>
 
+    <!-- Name Input -->
+    <div class="form-outline mb-4">
+      <label class="form-label" for="name">Name</label>
+      <input type="text" id="name" class="form-control" name="name" />
+    </div>
+
+    <div class="form-outline mb-4">
+      <label class="form-label" for="role">Role</label>
+      <select class="form-control" id="role" name="role">
+        <option value="Normal">Normal</option>
+        <option value="Premium">Premium</option>
+      </select>
+    </div>
+
     <button
       type="submit"
       class="btn btn-success btn-block mb-4"
-      id="login"
-      value="Login"
+      id="register"
+      value="Register"
     >
-      Login
+      Register
     </button>
-    <p>Don't have account register <a href="/auth/register/">here</a></p>
   </form>
 </div>
 
