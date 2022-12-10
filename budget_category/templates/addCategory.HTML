@@ -1,21 +1,20 @@
-{% extends 'base.html' %}
-
-{% block page_title %}Tambah Kategori Budget{% endblock %}
-
-{% block content %}
-    <h2>Add A Category</h2>
-    
-    <form method="post" action=".">
-        <table class="form_table">
-            {{ form.as_table }}
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" name="confirmed" value="Save">
-                    or
-                    <a href="{% url viewAllBudgetCategory %}">Cancel</a>
-                </td>
-            </tr>
-        </table>
-    </form>
-{% endblock %}
+{% extends "budget_category/budgetCategory_MainView.html" %} {% load static %} {% block head %}
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+  crossorigin="anonymous"
+/>
+<title>Add Category</title>
+{% endblock head %} {% block content %}
+<h1>Budget Category Form</h1>
+<form action="" method="POST">
+  {% csrf_token %}
+  <p>Category Name :</p>
+  <input type="text" name="name" required />
+  <br />
+  <input type="submit" value="Add" />
+  <br />
+  <a href="budget_category/budgetCategory_MainView">Cancel</a>
+</form>
+{% endblock content %}
