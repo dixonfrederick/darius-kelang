@@ -23,6 +23,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Target Value</th>
+                        <th scope="col" colspan="3">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,12 +33,16 @@
                             <td>{{ entry.name }}</td>
                             <td>{{ entry.date }}</td>
                             <td>{{ entry.balance }}</td>
+                            <td><button href="{% url 'detail' type_ID=entry.catID entryID=entry.ID  %}">Detail</button></td>
+                            <td><button href="{% url 'edit' type_ID=entry.catID entryID=entry.ID  %}">Edit</button></td>
+                            <td><button href="{% url 'delete' type_ID=entry.catID entryID=entry.ID  %}">Delete</button></td>
                         </tr>
                     {% endfor %}
                     <tr>
                     </tr>
                     </tbody>
                 </table>
+                <button href="{% url 'list' type_ID=typeID %}"></button>
             </div>
         </div>
     </div>

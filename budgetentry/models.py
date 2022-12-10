@@ -18,7 +18,8 @@ class BudgetEntry(models.Model):
     # int budgetFulfilledValue =
     # final date fulfilledDate =
 
-    def __init__(self, UID, catID, cat, name, date, targetValue):
+    def __init__(self, UID, catID, cat, name, date, targetValue, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         cat.updateValue(targetValue)
         self.UID = UID
         self.catID = catID
