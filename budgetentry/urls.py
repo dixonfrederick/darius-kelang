@@ -4,11 +4,9 @@ from .views import *
 
 urlpatterns = [
     path("home/", homePageView, name="home"),
-    path('', viewDashboard, name="dashboard"),  # Needs UID
-    path('entries/', viewEntries, name="list"),  # Needs UID + TypeID
-    path('entries/entry?id=1', viewEntryDetail, name="detail"),  # Needs UID + TypeID + EntryID
-    path('entries/entry?id=1/edit', editEntry, name="edit"),  # Needs UID + TypeID + EntryID
-    path('entries/entry?id=1/delete', deleteEntry, name="delete"),  # Needs UID + TypeID + EntryID
-    path('entries/create/', createEntry, name="create"),
-    path('entries/edit/', editEntry, name="edit")
+    path('dashboard', viewDashboard, name="dashboard"),  # Needs UID
+    path('entries/<int:type_ID>/', viewEntries, name="list"),  # Needs UID + TypeID
+    path('entries/<int:type_ID>/<int:entryID>/detail/', viewEntryDetail, name="detail"),
+    path('entries/<int:type_ID>/create/', createEntry, name="create"),
+    path('entries/<int:type_ID>/<int:entryID>/edit/', editEntry, name="edit")
 ]

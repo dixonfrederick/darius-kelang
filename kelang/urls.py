@@ -29,7 +29,7 @@ urlpatterns = [
     path('wallet/', include('wallet.urls')),
     path('login/', login),
     path('export/', include("export.urls")),
-    path('budgetcategory/', include("budgetcategory.urls"))
+    path('budgetcategory/', include("budgetcategory.urls")),
     path('entry/', include("budgetentry.urls"))
 ]
 
