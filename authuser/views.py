@@ -14,9 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Transaksi
 from .serializers import UserSerializer, TransaksiSerializer
 from wallet.views import namedtuplefetchall
-
-
-# get Wallet balance
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 ACCESS_TOKEN_GLOBAL = None
 
 
@@ -29,9 +28,30 @@ def get_tokens_for_user(user):
     }
 
 
+def register_user(request):
+    if request.method == 'GET':
+        return render(request, "authuser/register.html")
+    elif request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        name = request.POST.get('name')
+        role = request.POST.get('role')
+        User.objects.create(
+            name=name,
+            username=username,
+            role=role,
+            password=make_password(password)
+        )
+        initWallet(username)
+        return redirect('/login/')
+
+    return render(request, "authuser/register.html")
+
+
+@login_required
 def transaksi_add(request: Request):
     if request.method == 'GET':
-        return render(request, "authuser/tambahTransaksi.html")
+        return render(request, "authuser/tambahTransaksi.html", {'balance': request.session['balance']})
     elif request.method == 'POST':
         # headers = {
         #     "Authorization": "Bearer " + ACCESS_TOKEN_GLOBAL
@@ -47,20 +67,25 @@ def transaksi_add(request: Request):
         # url = "http://localhost:8000/api/v1/transaksi/"
         # response = requests.post(url=url, data=payload, headers=headers)
         # print(response.content)
-        Transaksi.objects.create(
-            jenisTransaksi=jenisTransaksi,
-            nominal=nominal,
-            users=request.user
-        )
-        updateBalance(request.user.username, int(nominal))
+
+        allow_transaction = updateBalance(request.user.username, int(nominal))
+        if allow_transaction:
+            Transaksi.objects.create(
+                jenisTransaksi=jenisTransaksi,
+                nominal=nominal,
+                users=request.user
+            )
+        else:
+            return render(request, "authuser/tambahTransaksi.html", {'balance': request.session['balance'], 'message': 'balance kurang'})
         return redirect("/transaksi/")
-    return render(request, "authuser/tambahTransaksi.html")
+    return render(request, "authuser/tambahTransaksi.html", {'balance': request.session['balance']})
 
 
+@login_required
 def transaksi_list(request):
     json_response = Transaksi.objects.filter(users=request.user.id)
     print(json_response)
-    return render(request, "authuser/listTransaksi.html", {'Transaksi': json_response})
+    return render(request, "authuser/listTransaksi.html", {'Transaksi': json_response, 'balance': request.session['balance']})
 
 
 # class ListTransaksi(APIView):
@@ -109,13 +134,16 @@ class LoginView(APIView):
         ACCESS_TOKEN_GLOBAL = response['access']
         print(ACCESS_TOKEN_GLOBAL)
         if user is not None:
-            login(request, user)
-            message = {
-                'message': 'Login Sukses',
-                'username': request.user.username,
-                'access': ACCESS_TOKEN_GLOBAL
-            }
-            return redirect('/')
+            if user.is_active:
+                login(request, user)
+                request.session['balance'] = getBalance(request.user.username)
+                message = {
+                    'message': 'Login Sukses',
+                    'username': request.user.username,
+                    'access': ACCESS_TOKEN_GLOBAL
+                }
+                messages.success(request, "Login Sukses")
+                return redirect('/')
         else:
             message = {
                 'message': "Username atau password invalid"
@@ -139,11 +167,14 @@ def updateBalance(username: str, nominal: int):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
     user_balance = int(getBalance(username))
-
+    allow_transaction = False
     if (nominal <= user_balance):
         new_balance = user_balance - nominal
         cursor.execute("""UPDATE wallet SET balance={0} WHERE userid='{1}';""".format(
             new_balance, username))
+        allow_transaction = True
+        return allow_transaction
+    return allow_transaction
 
 
 # init balance saat buat user baru

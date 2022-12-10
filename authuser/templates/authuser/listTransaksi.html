@@ -1,36 +1,32 @@
-{% extends 'main/main.html' %}
-{% load static %}
-
-{% block head %}
+{% extends 'main/main.html' %} {% load static %} {% block head %}
 <script src="https://cdn.tailwindcss.com"></script>
-<title>Transaksi</title>
-{% endblock head %}
 
-{% block content %}
+{% block meta %}
+<title>Transaction</title>
+{% endblock meta %} {% endblock head %} {% block content %}
 <div class="container mt-4">
-    <h3>My Transaction</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Transaction</th>
-                <th>Nominal</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            {% for transaksi in Transaksi %}
-            <tr>
-                <td>{{ transaksi.jenisTransaksi}}</td>
-                <td>{{ transaksi.nominal }}</td>
-                <td>{{ transaksi.tanggalTransaksi }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <p>Buat Transaksi <a href="/transaksi/tambah/" class="link-primary">Disini</a></p>
+  <h3>My Transaction</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Transaction</th>
+        <th>Nominal</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaksi in Transaksi %}
+      <tr>
+        <td>{{ transaksi.jenisTransaksi}}</td>
+        <td>{{ transaksi.nominal }}</td>
+        <td>{{ transaksi.tanggalTransaksi }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>
+    Buat Transaksi <a href="/transaksi/tambah/" class="link-primary">Disini</a>
+  </p>
 </div>
-
-
 
 {% endblock content %}
