@@ -85,6 +85,7 @@ def transaksi_add(request: Request):
     return render(request, "authuser/tambahTransaksi.html", {'balance': request.session['balance']})
 
 
+# get Wallet balance
 @login_required
 def transaksi_list(request):
     json_response = Transaksi.objects.filter(users=request.user.id)
