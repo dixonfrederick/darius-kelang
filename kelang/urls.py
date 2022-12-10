@@ -32,5 +32,3 @@ urlpatterns = [
     path('budgetcategory/', include("budgetcategory.urls")),
     path('entry/', include("budgetentry.urls"))
 ]
-
-
