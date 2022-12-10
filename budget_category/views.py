@@ -19,7 +19,13 @@ def homePageView(request) :
     return render(request, "/home")
 
 def budgetCategory_MainView(request) :
-    return render(request, "budget_category/budgetCategory_MainView.HTML") 
+    if not request.user.is_authenticated():
+        return render(request, "/home")
+    userId = request.user.id
+    authentication = BudgetType.objects.filter(userID=userId)
+
+    result = {"budgetCategory": authentication}
+    return render(request, "budget_category/budgetCategory_MainView.HTML", result) 
 
 # menampilkan halaman utama "Kelola Jenis Budget"
 # menampilkan daftar semua jenis budget, ketika di dropdown suatu entry budget akan mengaktifkan method viewAllBudget()
