@@ -12,7 +12,7 @@ def homePageView(request):
 
 
 def viewDashboard(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, "/home")
     uid = request.user.id
     # request.session["uid"] = uid
@@ -101,7 +101,7 @@ def editEntry(request, type_ID, entryID):
 
 def deleteEntry(request, type_ID, entryID):  # Post
     # entryID = 1
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         uid = request.user.id
         Entry = BudgetEntry.objects.get(ID=entryID, catID=type_ID)
         if Entry.UID == uid:
