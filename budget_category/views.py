@@ -19,7 +19,7 @@ def homePageView(request) :
     return render(request, "/home")
 
 def budgetCategory_MainView(request) :
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, "/home")
     userId = request.user.id
     authentication = BudgetType.objects.filter(userID=userId)
