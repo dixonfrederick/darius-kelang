@@ -5,7 +5,6 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.db import connection
 from wallet.views import namedtuplefetchall
-from authuser.models import Transaksi
 
 
 def export(request):
@@ -24,25 +23,37 @@ def export(request):
     return render(request, 'export/exportpage.html')
 
 
+def get_user_id(username):
+    cursor = connection.cursor()
+    cursor.execute("SET search_path TO postgres,public")
+    cursor.execute(f"""SELECT id FROM authuser_user WHERE username='{username}';""")
+    result = namedtuplefetchall(cursor)
+
+    return result[0].id
+
+
 def download_csv(request):
+    username = request.user.username
+    user_id = get_user_id(username)
+
     response = HttpResponse(
         content_type='text/csv',
-        headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
+        headers={'Content-Disposition': 'attachment; filename="export.csv"'},
     )
 
     writer = csv.writer(response)
     writer.writerow(['name', 'date', 'targetvalue'])
-    budget = fetch_budget()
+    budget = fetch_budget(user_id)
     for row in budget:
         writer.writerow(row)
 
     writer.writerow(['jenisTransaksi', 'nominal', 'tanggalTransaksi'])
-    transaksi = fetch_transaksi()
+    transaksi = fetch_transaksi(user_id)
     for row in transaksi:
         writer.writerow(row)
 
     writer.writerow(['name', 'balance'])
-    wallet = fetch_wallet()
+    wallet = fetch_wallet(username)
     for row in wallet:
         writer.writerow(row)
 
@@ -50,9 +61,12 @@ def download_csv(request):
 
 
 def download_xlsx(request):
+    username = request.user.username
+    user_id = get_user_id(username)
+
     response = HttpResponse(
         content_type='text/vnd.ms-excel',
-        headers={'Content-Disposition': 'attachment; filename="somefilename.xlsx"'},
+        headers={'Content-Disposition': 'attachment; filename="export.xlsx"'},
     )
 
     workbook = xlsxwriter.Workbook(response)
@@ -65,10 +79,13 @@ def download_xlsx(request):
         counter2 += 1
     counter += 1
     counter2 = 0
-    budget = fetch_budget()
+    budget = fetch_budget(user_id)
     for row in budget:
         for i in row:
-            worksheet.write(counter, counter2, i)
+            if counter2 == 1:
+                worksheet.write(counter, counter2, i.strftime('%d-%m-%Y'))
+            else:
+                worksheet.write(counter, counter2, i)
             counter2 += 1
         counter += 1
         counter2 = 0
@@ -78,10 +95,13 @@ def download_xlsx(request):
         counter2 += 1
     counter += 1
     counter2 = 0
-    transaksi = fetch_transaksi()
+    transaksi = fetch_transaksi(user_id)
     for row in transaksi:
         for i in row:
-            worksheet.write(counter, counter2, i)
+            if counter2 == 2:
+                worksheet.write(counter, counter2, i.strftime('%d-%m-%Y'))
+            else:
+                worksheet.write(counter, counter2, i)
             counter2 += 1
         counter += 1
         counter2 = 0
@@ -91,7 +111,7 @@ def download_xlsx(request):
         counter2 += 1
     counter += 1
     counter2 = 0
-    wallet = fetch_wallet()
+    wallet = fetch_wallet(username)
     for row in wallet:
         for i in row:
             worksheet.write(counter, counter2, i)
@@ -105,9 +125,11 @@ def download_xlsx(request):
 
 
 def download_json(request):
+    username = request.user.username
+    user_id = get_user_id(username)
     data = {}
 
-    budget = fetch_budget()
+    budget = fetch_budget(user_id)
     temp_dict = {}
     counter = 0
     for row in budget:
@@ -116,7 +138,7 @@ def download_json(request):
         counter += 1
     data["budget"] = temp_dict
 
-    transaksi = fetch_transaksi()
+    transaksi = fetch_transaksi(user_id)
     temp_dict = {}
     counter = 0
     for row in transaksi:
@@ -125,7 +147,7 @@ def download_json(request):
         counter += 1
     data["transaksi"] = temp_dict
 
-    wallet = fetch_wallet()
+    wallet = fetch_wallet(username)
     temp_dict = {}
     counter = 0
     for row in wallet:
@@ -137,44 +159,40 @@ def download_json(request):
     response = HttpResponse(
         json.dumps(data),
         content_type='application/json',
-        headers={'Content-Disposition': 'attachment; filename="somefilename.json"'},
+        headers={'Content-Disposition': 'attachment; filename="export.json"'},
     )
 
     return response
 
 
-def fetch_budget():
+def fetch_budget(user_id):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM budgetentry;""")
+    cursor.execute(f"""SELECT * FROM budgetentry WHERE uid={user_id};""")
     result = namedtuplefetchall(cursor)
-    print(result)
     budget = []
     for res in result:
         budget.append([res.name, res.date, res.targetvalue])
-    print(budget)
 
     return budget
 
 
-def fetch_transaksi():
+def fetch_transaksi(user_id):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM authuser_transaksi;""")
+    cursor.execute(f"""SELECT * FROM authuser_transaksi WHERE users_id={user_id};""")
     result = namedtuplefetchall(cursor)
-    print(result)
     transaksi = []
     for res in result:
         transaksi.append([res.jenisTransaksi, res.nominal, res.tanggalTransaksi])
-    print(transaksi)
 
     return transaksi
 
 
-def fetch_wallet():
+def fetch_wallet(username):
     cursor = connection.cursor()
     cursor.execute("SET search_path TO postgres,public")
-    cursor.execute("""SELECT * FROM WALLET;""")
+    cursor.execute(f"""SELECT * FROM wallet WHERE userid='{username}';""")
     result = namedtuplefetchall(cursor)
     wallet = []
     for res in result:
